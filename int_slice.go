@@ -126,9 +126,20 @@ func IntSliceVar(p *[]int, name string, value []int, usage string) {
 	CommandLine.VarP(newIntSliceValue(value, p), name, "", usage)
 }
 
+// NewIntSliceVar defines a int[] flag with specified name, default value, and usage string.
+// The argument p points to a int[] variable in which to store the value of the flag.
+func NewIntSliceVar(p *[]int, name string, value []int, usage string) *Flag {
+	return NewIntSliceVarP(p, name, "", value, usage)
+}
+
 // IntSliceVarP is like IntSliceVar, but accepts a shorthand letter that can be used after a single dash.
 func IntSliceVarP(p *[]int, name, shorthand string, value []int, usage string) {
 	CommandLine.VarP(newIntSliceValue(value, p), name, shorthand, usage)
+}
+
+// NewIntSliceVarP is like NewIntSliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIntSliceVarP(p *[]int, name, shorthand string, value []int, usage string) *Flag {
+	return NewVarPF(newIntSliceValue(value, p), name, shorthand, usage)
 }
 
 // IntSlice defines a []int flag with specified name, default value, and usage string.
@@ -152,7 +163,19 @@ func IntSlice(name string, value []int, usage string) *[]int {
 	return CommandLine.IntSliceP(name, "", value, usage)
 }
 
+// NewIntSlice defines a []int flag with specified name, default value, and usage string.
+// The return value is the address of a []int variable that stores the value of the flag.
+func NewIntSlice(name string, value []int, usage string) (*[]int, *Flag) {
+	return NewIntSliceP(name, "", value, usage)
+}
+
 // IntSliceP is like IntSlice, but accepts a shorthand letter that can be used after a single dash.
 func IntSliceP(name, shorthand string, value []int, usage string) *[]int {
 	return CommandLine.IntSliceP(name, shorthand, value, usage)
+}
+
+// NewIntSliceP is like NewIntSlice, but accepts a shorthand letter that can be used after a single dash.
+func NewIntSliceP(name, shorthand string, value []int, usage string) (*[]int, *Flag) {
+	p := []int{}
+	return &p, NewIntSliceVarP(&p, name, shorthand, value, usage)
 }

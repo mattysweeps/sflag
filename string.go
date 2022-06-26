@@ -48,9 +48,20 @@ func StringVar(p *string, name string, value string, usage string) {
 	CommandLine.VarP(newStringValue(value, p), name, "", usage)
 }
 
+// NewStringVar defines a string flag with specified name, default value, and usage string.
+// The argument p points to a string variable in which to store the value of the flag.
+func NewStringVar(p *string, name string, value string, usage string) *Flag {
+	return NewStringVarP(p, name, "", value, usage)
+}
+
 // StringVarP is like StringVar, but accepts a shorthand letter that can be used after a single dash.
 func StringVarP(p *string, name, shorthand string, value string, usage string) {
 	CommandLine.VarP(newStringValue(value, p), name, shorthand, usage)
+}
+
+// NewStringVarP is like NewStringVar, but accepts a shorthand letter that can be used after a single dash.
+func NewStringVarP(p *string, name, shorthand string, value string, usage string) *Flag {
+	return NewVarPF(newStringValue(value, p), name, shorthand, usage)
 }
 
 // String defines a string flag with specified name, default value, and usage string.
@@ -74,7 +85,19 @@ func String(name string, value string, usage string) *string {
 	return CommandLine.StringP(name, "", value, usage)
 }
 
+// NewString defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a string variable that stores the value of the flag.
+func NewString(name string, value string, usage string) (*string, *Flag) {
+	return NewStringP(name, "", value, usage)
+}
+
 // StringP is like String, but accepts a shorthand letter that can be used after a single dash.
 func StringP(name, shorthand string, value string, usage string) *string {
 	return CommandLine.StringP(name, shorthand, value, usage)
+}
+
+// NewStringP is like String, but accepts a shorthand letter that can be used after a single dash.
+func NewStringP(name, shorthand string, value string, usage string) (*string, *Flag) {
+	p := new(string)
+	return p, NewStringVarP(p, name, shorthand, value, usage)
 }

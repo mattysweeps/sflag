@@ -134,9 +134,20 @@ func Float64SliceVar(p *[]float64, name string, value []float64, usage string) {
 	CommandLine.VarP(newFloat64SliceValue(value, p), name, "", usage)
 }
 
+// NewFloat64SliceVar defines a float64[] flag with specified name, default value, and usage string.
+// The argument p points to a float64[] variable in which to store the value of the flag.
+func NewFloat64SliceVar(p *[]float64, name string, value []float64, usage string) *Flag {
+	return NewFloat64SliceVarP(p, name, "", value, usage)
+}
+
 // Float64SliceVarP is like Float64SliceVar, but accepts a shorthand letter that can be used after a single dash.
 func Float64SliceVarP(p *[]float64, name, shorthand string, value []float64, usage string) {
 	CommandLine.VarP(newFloat64SliceValue(value, p), name, shorthand, usage)
+}
+
+// NewFloat64SliceVarP is like Float64SliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewFloat64SliceVarP(p *[]float64, name, shorthand string, value []float64, usage string) *Flag {
+	return NewVarPF(newFloat64SliceValue(value, p), name, shorthand, usage)
 }
 
 // Float64Slice defines a []float64 flag with specified name, default value, and usage string.
@@ -160,7 +171,19 @@ func Float64Slice(name string, value []float64, usage string) *[]float64 {
 	return CommandLine.Float64SliceP(name, "", value, usage)
 }
 
+// NewFloat64Slice defines a []float64 flag with specified name, default value, and usage string.
+// The return value is the address of a []float64 variable that stores the value of the flag.
+func NewFloat64Slice(name string, value []float64, usage string) (*[]float64, *Flag) {
+	return NewFloat64SliceP(name, "", value, usage)
+}
+
 // Float64SliceP is like Float64Slice, but accepts a shorthand letter that can be used after a single dash.
 func Float64SliceP(name, shorthand string, value []float64, usage string) *[]float64 {
 	return CommandLine.Float64SliceP(name, shorthand, value, usage)
+}
+
+// NewFloat64SliceP is like Float64Slice, but accepts a shorthand letter that can be used after a single dash.
+func NewFloat64SliceP(name, shorthand string, value []float64, usage string) (*[]float64, *Flag) {
+	p := []float64{}
+	return &p, NewFloat64SliceVarP(&p, name, shorthand, value, usage)
 }

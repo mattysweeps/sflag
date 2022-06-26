@@ -134,9 +134,20 @@ func Int64SliceVar(p *[]int64, name string, value []int64, usage string) {
 	CommandLine.VarP(newInt64SliceValue(value, p), name, "", usage)
 }
 
+// NewInt64SliceVar defines a int64[] flag with specified name, default value, and usage string.
+// The argument p points to a int64[] variable in which to store the value of the flag.
+func NewInt64SliceVar(p *[]int64, name string, value []int64, usage string) *Flag {
+	return NewInt64SliceVarP(p, name, "", value, usage)
+}
+
 // Int64SliceVarP is like Int64SliceVar, but accepts a shorthand letter that can be used after a single dash.
 func Int64SliceVarP(p *[]int64, name, shorthand string, value []int64, usage string) {
 	CommandLine.VarP(newInt64SliceValue(value, p), name, shorthand, usage)
+}
+
+// NewInt64SliceVarP is like NewInt64SliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewInt64SliceVarP(p *[]int64, name, shorthand string, value []int64, usage string) *Flag {
+	return NewVarPF(newInt64SliceValue(value, p), name, shorthand, usage)
 }
 
 // Int64Slice defines a []int64 flag with specified name, default value, and usage string.
@@ -160,7 +171,19 @@ func Int64Slice(name string, value []int64, usage string) *[]int64 {
 	return CommandLine.Int64SliceP(name, "", value, usage)
 }
 
+// NewInt64Slice defines a []int64 flag with specified name, default value, and usage string.
+// The return value is the address of a []int64 variable that stores the value of the flag.
+func NewInt64Slice(name string, value []int64, usage string) (*[]int64, *Flag) {
+	return NewInt64SliceP(name, "", value, usage)
+}
+
 // Int64SliceP is like Int64Slice, but accepts a shorthand letter that can be used after a single dash.
 func Int64SliceP(name, shorthand string, value []int64, usage string) *[]int64 {
 	return CommandLine.Int64SliceP(name, shorthand, value, usage)
+}
+
+// NewInt64SliceP is like NewInt64Slice, but accepts a shorthand letter that can be used after a single dash.
+func NewInt64SliceP(name, shorthand string, value []int64, usage string) (*[]int64, *Flag) {
+	p := []int64{}
+	return &p, NewInt64SliceVarP(&p, name, shorthand, value, usage)
 }

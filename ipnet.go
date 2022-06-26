@@ -66,9 +66,20 @@ func IPNetVar(p *net.IPNet, name string, value net.IPNet, usage string) {
 	CommandLine.VarP(newIPNetValue(value, p), name, "", usage)
 }
 
+// NewIPNetVar defines an net.IPNet flag with specified name, default value, and usage string.
+// The argument p points to an net.IPNet variable in which to store the value of the flag.
+func NewIPNetVar(p *net.IPNet, name string, value net.IPNet, usage string) *Flag {
+	return NewIPNetVarP(p, name, "", value, usage)
+}
+
 // IPNetVarP is like IPNetVar, but accepts a shorthand letter that can be used after a single dash.
 func IPNetVarP(p *net.IPNet, name, shorthand string, value net.IPNet, usage string) {
 	CommandLine.VarP(newIPNetValue(value, p), name, shorthand, usage)
+}
+
+// NewIPNetVarP is like NewIPNetVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIPNetVarP(p *net.IPNet, name, shorthand string, value net.IPNet, usage string) *Flag {
+	return NewVarPF(newIPNetValue(value, p), name, shorthand, usage)
 }
 
 // IPNet defines an net.IPNet flag with specified name, default value, and usage string.
@@ -92,7 +103,19 @@ func IPNet(name string, value net.IPNet, usage string) *net.IPNet {
 	return CommandLine.IPNetP(name, "", value, usage)
 }
 
+// NewIPNet defines an net.IPNet flag with specified name, default value, and usage string.
+// The return value is the address of an net.IPNet variable that stores the value of the flag.
+func NewIPNet(name string, value net.IPNet, usage string) (*net.IPNet, *Flag) {
+	return NewIPNetP(name, "", value, usage)
+}
+
 // IPNetP is like IPNet, but accepts a shorthand letter that can be used after a single dash.
 func IPNetP(name, shorthand string, value net.IPNet, usage string) *net.IPNet {
 	return CommandLine.IPNetP(name, shorthand, value, usage)
+}
+
+// NewIPNetP is like NewIPNet, but accepts a shorthand letter that can be used after a single dash.
+func NewIPNetP(name, shorthand string, value net.IPNet, usage string) (*net.IPNet, *Flag) {
+	p := new(net.IPNet)
+	return p, NewIPNetVarP(p, name, shorthand, value, usage)
 }

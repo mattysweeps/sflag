@@ -115,9 +115,20 @@ func IPNetSliceVar(p *[]net.IPNet, name string, value []net.IPNet, usage string)
 	CommandLine.VarP(newIPNetSliceValue(value, p), name, "", usage)
 }
 
+// NewIPNetSliceVar defines a []net.IPNet flag with specified name, default value, and usage string.
+// The argument p points to a []net.IPNet variable in which to store the value of the flag.
+func NewIPNetSliceVar(p *[]net.IPNet, name string, value []net.IPNet, usage string) *Flag {
+	return NewIPNetSliceVarP(p, name, "", value, usage)
+}
+
 // IPNetSliceVarP is like IPNetSliceVar, but accepts a shorthand letter that can be used after a single dash.
 func IPNetSliceVarP(p *[]net.IPNet, name, shorthand string, value []net.IPNet, usage string) {
 	CommandLine.VarP(newIPNetSliceValue(value, p), name, shorthand, usage)
+}
+
+// NewIPNetSliceVarP is like NewIPNetSliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIPNetSliceVarP(p *[]net.IPNet, name, shorthand string, value []net.IPNet, usage string) *Flag {
+	return NewVarPF(newIPNetSliceValue(value, p), name, shorthand, usage)
 }
 
 // IPNetSlice defines a []net.IPNet flag with specified name, default value, and usage string.
@@ -141,7 +152,19 @@ func IPNetSlice(name string, value []net.IPNet, usage string) *[]net.IPNet {
 	return CommandLine.IPNetSliceP(name, "", value, usage)
 }
 
+// NewIPNetSlice defines a []net.IPNet flag with specified name, default value, and usage string.
+// The return value is the address of a []net.IP variable that stores the value of the flag.
+func NewIPNetSlice(name string, value []net.IPNet, usage string) (*[]net.IPNet, *Flag) {
+	return NewIPNetSliceP(name, "", value, usage)
+}
+
 // IPNetSliceP is like IPNetSlice, but accepts a shorthand letter that can be used after a single dash.
 func IPNetSliceP(name, shorthand string, value []net.IPNet, usage string) *[]net.IPNet {
 	return CommandLine.IPNetSliceP(name, shorthand, value, usage)
+}
+
+// NewIPNetSliceP is like NewIPNetSlice, but accepts a shorthand letter that can be used after a single dash.
+func NewIPNetSliceP(name, shorthand string, value []net.IPNet, usage string) (*[]net.IPNet, *Flag) {
+	p := []net.IPNet{}
+	return &p, NewIPNetSliceVarP(&p, name, shorthand, value, usage)
 }

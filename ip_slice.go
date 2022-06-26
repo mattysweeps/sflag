@@ -154,9 +154,20 @@ func IPSliceVar(p *[]net.IP, name string, value []net.IP, usage string) {
 	CommandLine.VarP(newIPSliceValue(value, p), name, "", usage)
 }
 
+// NewIPSliceVar defines a []net.IP flag with specified name, default value, and usage string.
+// The argument p points to a []net.IP variable in which to store the value of the flag.
+func NewIPSliceVar(p *[]net.IP, name string, value []net.IP, usage string) *Flag {
+	return NewIPSliceVarP(p, name, "", value, usage)
+}
+
 // IPSliceVarP is like IPSliceVar, but accepts a shorthand letter that can be used after a single dash.
 func IPSliceVarP(p *[]net.IP, name, shorthand string, value []net.IP, usage string) {
 	CommandLine.VarP(newIPSliceValue(value, p), name, shorthand, usage)
+}
+
+// NewIPSliceVarP is like NewIPSliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIPSliceVarP(p *[]net.IP, name, shorthand string, value []net.IP, usage string) *Flag {
+	return NewVarPF(newIPSliceValue(value, p), name, shorthand, usage)
 }
 
 // IPSlice defines a []net.IP flag with specified name, default value, and usage string.
@@ -180,7 +191,19 @@ func IPSlice(name string, value []net.IP, usage string) *[]net.IP {
 	return CommandLine.IPSliceP(name, "", value, usage)
 }
 
+// NewIPSlice defines a []net.IP flag with specified name, default value, and usage string.
+// The return value is the address of a []net.IP variable that stores the value of the flag.
+func NewIPSlice(name string, value []net.IP, usage string) (*[]net.IP, *Flag) {
+	return NewIPSliceP(name, "", value, usage)
+}
+
 // IPSliceP is like IPSlice, but accepts a shorthand letter that can be used after a single dash.
 func IPSliceP(name, shorthand string, value []net.IP, usage string) *[]net.IP {
 	return CommandLine.IPSliceP(name, shorthand, value, usage)
+}
+
+// NewIPSliceP is like NewIPSlice, but accepts a shorthand letter that can be used after a single dash.
+func NewIPSliceP(name, shorthand string, value []net.IP, usage string) (*[]net.IP, *Flag) {
+	p := []net.IP{}
+	return &p, NewIPSliceVarP(&p, name, "", value, usage)
 }

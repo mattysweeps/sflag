@@ -52,9 +52,20 @@ func IntVar(p *int, name string, value int, usage string) {
 	CommandLine.VarP(newIntValue(value, p), name, "", usage)
 }
 
+// NewIntVar defines an int flag with specified name, default value, and usage string.
+// The argument p points to an int variable in which to store the value of the flag.
+func NewIntVar(p *int, name string, value int, usage string) *Flag {
+	return NewIntVarP(p, name, "", value, usage)
+}
+
 // IntVarP is like IntVar, but accepts a shorthand letter that can be used after a single dash.
 func IntVarP(p *int, name, shorthand string, value int, usage string) {
 	CommandLine.VarP(newIntValue(value, p), name, shorthand, usage)
+}
+
+// NewIntVarP is like IntVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIntVarP(p *int, name, shorthand string, value int, usage string) *Flag {
+	return NewVarPF(newIntValue(value, p), name, shorthand, usage)
 }
 
 // Int defines an int flag with specified name, default value, and usage string.
@@ -78,7 +89,19 @@ func Int(name string, value int, usage string) *int {
 	return CommandLine.IntP(name, "", value, usage)
 }
 
+// NewInt defines an int flag with specified name, default value, and usage string.
+// The return value is the address of an int variable that stores the value of the flag.
+func NewInt(name string, value int, usage string) (*int, *Flag) {
+	return NewIntP(name, "", value, usage)
+}
+
 // IntP is like Int, but accepts a shorthand letter that can be used after a single dash.
 func IntP(name, shorthand string, value int, usage string) *int {
 	return CommandLine.IntP(name, shorthand, value, usage)
+}
+
+// NewIntP is like Int, but accepts a shorthand letter that can be used after a single dash.
+func NewIntP(name, shorthand string, value int, usage string) (*int, *Flag) {
+	p := new(int)
+	return p, NewIntVarP(p, name, shorthand, value, usage)
 }

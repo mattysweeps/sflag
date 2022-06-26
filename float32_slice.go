@@ -142,9 +142,20 @@ func Float32SliceVar(p *[]float32, name string, value []float32, usage string) {
 	CommandLine.VarP(newFloat32SliceValue(value, p), name, "", usage)
 }
 
+// NewFloat32SliceVar defines a float32[] flag with specified name, default value, and usage string.
+// The argument p points to a float32[] variable in which to store the value of the flag.
+func NewFloat32SliceVar(p *[]float32, name string, value []float32, usage string) *Flag {
+	return NewFloat32SliceVarP(p, name, "", value, usage)
+}
+
 // Float32SliceVarP is like Float32SliceVar, but accepts a shorthand letter that can be used after a single dash.
 func Float32SliceVarP(p *[]float32, name, shorthand string, value []float32, usage string) {
 	CommandLine.VarP(newFloat32SliceValue(value, p), name, shorthand, usage)
+}
+
+// NewFloat32SliceVarP is like NewFloat32SliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewFloat32SliceVarP(p *[]float32, name, shorthand string, value []float32, usage string) *Flag {
+	return NewVarPF(newFloat32SliceValue(value, p), name, shorthand, usage)
 }
 
 // Float32Slice defines a []float32 flag with specified name, default value, and usage string.
@@ -168,7 +179,19 @@ func Float32Slice(name string, value []float32, usage string) *[]float32 {
 	return CommandLine.Float32SliceP(name, "", value, usage)
 }
 
+// NewFloat32Slice defines a []float32 flag with specified name, default value, and usage string.
+// The return value is the address of a []float32 variable that stores the value of the flag.
+func NewFloat32Slice(name string, value []float32, usage string) (*[]float32, *Flag) {
+	return NewFloat32SliceP(name, "", value, usage)
+}
+
 // Float32SliceP is like Float32Slice, but accepts a shorthand letter that can be used after a single dash.
 func Float32SliceP(name, shorthand string, value []float32, usage string) *[]float32 {
 	return CommandLine.Float32SliceP(name, shorthand, value, usage)
+}
+
+// NewFloat32SliceP is like Float32Slice, but accepts a shorthand letter that can be used after a single dash.
+func NewFloat32SliceP(name, shorthand string, value []float32, usage string) (*[]float32, *Flag) {
+	p := []float32{}
+	return &p, NewFloat32SliceVarP(&p, name, shorthand, value, usage)
 }

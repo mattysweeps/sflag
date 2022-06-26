@@ -56,9 +56,20 @@ func Int32Var(p *int32, name string, value int32, usage string) {
 	CommandLine.VarP(newInt32Value(value, p), name, "", usage)
 }
 
+// NewInt32Var defines an int32 flag with specified name, default value, and usage string.
+// The argument p points to an int32 variable in which to store the value of the flag.
+func NewInt32Var(p *int32, name string, value int32, usage string) *Flag {
+	return NewInt32VarP(p, name, "", value, usage)
+}
+
 // Int32VarP is like Int32Var, but accepts a shorthand letter that can be used after a single dash.
 func Int32VarP(p *int32, name, shorthand string, value int32, usage string) {
 	CommandLine.VarP(newInt32Value(value, p), name, shorthand, usage)
+}
+
+// NewInt32VarP is like NewInt32Var, but accepts a shorthand letter that can be used after a single dash.
+func NewInt32VarP(p *int32, name, shorthand string, value int32, usage string) *Flag {
+	return NewVarPF(newInt32Value(value, p), name, shorthand, usage)
 }
 
 // Int32 defines an int32 flag with specified name, default value, and usage string.
@@ -82,7 +93,19 @@ func Int32(name string, value int32, usage string) *int32 {
 	return CommandLine.Int32P(name, "", value, usage)
 }
 
+// NewInt32 defines an int32 flag with specified name, default value, and usage string.
+// The return value is the address of an int32 variable that stores the value of the flag.
+func NewInt32(name string, value int32, usage string) (*int32, *Flag) {
+	return NewInt32P(name, "", value, usage)
+}
+
 // Int32P is like Int32, but accepts a shorthand letter that can be used after a single dash.
 func Int32P(name, shorthand string, value int32, usage string) *int32 {
 	return CommandLine.Int32P(name, shorthand, value, usage)
+}
+
+// NewInt32P is like Int32, but accepts a shorthand letter that can be used after a single dash.
+func NewInt32P(name, shorthand string, value int32, usage string) (*int32, *Flag) {
+	p := new(int32)
+	return p, NewInt32VarP(p, name, shorthand, value, usage)
 }

@@ -90,9 +90,20 @@ func IPMaskVar(p *net.IPMask, name string, value net.IPMask, usage string) {
 	CommandLine.VarP(newIPMaskValue(value, p), name, "", usage)
 }
 
+// NewIPMaskVar defines an net.IPMask flag with specified name, default value, and usage string.
+// The argument p points to an net.IPMask variable in which to store the value of the flag.
+func NewIPMaskVar(p *net.IPMask, name string, value net.IPMask, usage string) *Flag {
+	return NewIPMaskVarP(p, name, "", value, usage)
+}
+
 // IPMaskVarP is like IPMaskVar, but accepts a shorthand letter that can be used after a single dash.
 func IPMaskVarP(p *net.IPMask, name, shorthand string, value net.IPMask, usage string) {
 	CommandLine.VarP(newIPMaskValue(value, p), name, shorthand, usage)
+}
+
+// NewIPMaskVarP is like NewIPMaskVar, but accepts a shorthand letter that can be used after a single dash.
+func NewIPMaskVarP(p *net.IPMask, name, shorthand string, value net.IPMask, usage string) *Flag {
+	return NewVarPF(newIPMaskValue(value, p), name, shorthand, usage)
 }
 
 // IPMask defines an net.IPMask flag with specified name, default value, and usage string.
@@ -116,7 +127,19 @@ func IPMask(name string, value net.IPMask, usage string) *net.IPMask {
 	return CommandLine.IPMaskP(name, "", value, usage)
 }
 
+// NewIPMask defines an net.IPMask flag with specified name, default value, and usage string.
+// The return value is the address of an net.IPMask variable that stores the value of the flag.
+func NewIPMask(name string, value net.IPMask, usage string) (*net.IPMask, *Flag) {
+	return NewIPMaskP(name, "", value, usage)
+}
+
 // IPMaskP is like IP, but accepts a shorthand letter that can be used after a single dash.
 func IPMaskP(name, shorthand string, value net.IPMask, usage string) *net.IPMask {
 	return CommandLine.IPMaskP(name, shorthand, value, usage)
+}
+
+// NewIPMaskP is like NewIP, but accepts a shorthand letter that can be used after a single dash.
+func NewIPMaskP(name, shorthand string, value net.IPMask, usage string) (*net.IPMask, *Flag) {
+	p := new(net.IPMask)
+	return p, NewIPMaskVarP(p, name, shorthand, value, usage)
 }

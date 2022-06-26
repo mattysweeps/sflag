@@ -115,9 +115,21 @@ func StringToInt64Var(p *map[string]int64, name string, value map[string]int64, 
 	CommandLine.VarP(newStringToInt64Value(value, p), name, "", usage)
 }
 
+// NewStringToInt64Var defines a string flag with specified name, default value, and usage string.
+// The argument p point64s to a map[string]int64 variable in which to store the value of the flag.
+// The value of each argument will not try to be separated by comma
+func NewStringToInt64Var(p *map[string]int64, name string, value map[string]int64, usage string) *Flag {
+	return NewStringToInt64VarP(p, name, "", value, usage)
+}
+
 // StringToInt64VarP is like StringToInt64Var, but accepts a shorthand letter that can be used after a single dash.
 func StringToInt64VarP(p *map[string]int64, name, shorthand string, value map[string]int64, usage string) {
 	CommandLine.VarP(newStringToInt64Value(value, p), name, shorthand, usage)
+}
+
+// NewStringToInt64VarP is like NewStringToInt64Var, but accepts a shorthand letter that can be used after a single dash.
+func NewStringToInt64VarP(p *map[string]int64, name, shorthand string, value map[string]int64, usage string) *Flag {
+	return NewVarPF(newStringToInt64Value(value, p), name, shorthand, usage)
 }
 
 // StringToInt64 defines a string flag with specified name, default value, and usage string.
@@ -143,7 +155,20 @@ func StringToInt64(name string, value map[string]int64, usage string) *map[strin
 	return CommandLine.StringToInt64P(name, "", value, usage)
 }
 
+// NewStringToInt64 defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a map[string]int64 variable that stores the value of the flag.
+// The value of each argument will not try to be separated by comma
+func NewStringToInt64(name string, value map[string]int64, usage string) (*map[string]int64, *Flag) {
+	return NewStringToInt64P(name, "", value, usage)
+}
+
 // StringToInt64P is like StringToInt64, but accepts a shorthand letter that can be used after a single dash.
 func StringToInt64P(name, shorthand string, value map[string]int64, usage string) *map[string]int64 {
 	return CommandLine.StringToInt64P(name, shorthand, value, usage)
+}
+
+// NewStringToInt64P is like NewStringToInt64, but accepts a shorthand letter that can be used after a single dash.
+func NewStringToInt64P(name, shorthand string, value map[string]int64, usage string) (*map[string]int64, *Flag) {
+	p := map[string]int64{}
+	return &p, NewStringToInt64VarP(&p, name, shorthand, value, usage)
 }

@@ -56,9 +56,20 @@ func UintVar(p *uint, name string, value uint, usage string) {
 	CommandLine.VarP(newUintValue(value, p), name, "", usage)
 }
 
+// NewUintVar defines a uint flag with specified name, default value, and usage string.
+// The argument p points to a uint  variable in which to store the value of the flag.
+func NewUintVar(p *uint, name string, value uint, usage string) *Flag {
+	return NewUintVarP(p, name, "", value, usage)
+}
+
 // UintVarP is like UintVar, but accepts a shorthand letter that can be used after a single dash.
 func UintVarP(p *uint, name, shorthand string, value uint, usage string) {
 	CommandLine.VarP(newUintValue(value, p), name, shorthand, usage)
+}
+
+// NewUintVarP is like UintVar, but accepts a shorthand letter that can be used after a single dash.
+func NewUintVarP(p *uint, name, shorthand string, value uint, usage string) *Flag {
+	return NewVarPF(newUintValue(value, p), name, shorthand, usage)
 }
 
 // Uint defines a uint flag with specified name, default value, and usage string.
@@ -82,7 +93,19 @@ func Uint(name string, value uint, usage string) *uint {
 	return CommandLine.UintP(name, "", value, usage)
 }
 
+// NewUint defines a uint flag with specified name, default value, and usage string.
+// The return value is the address of a uint  variable that stores the value of the flag.
+func NewUint(name string, value uint, usage string) (*uint, *Flag) {
+	return NewUintP(name, "", value, usage)
+}
+
 // UintP is like Uint, but accepts a shorthand letter that can be used after a single dash.
 func UintP(name, shorthand string, value uint, usage string) *uint {
 	return CommandLine.UintP(name, shorthand, value, usage)
+}
+
+// NewUintP is like Uint, but accepts a shorthand letter that can be used after a single dash.
+func NewUintP(name, shorthand string, value uint, usage string) (*uint, *Flag) {
+	p := new(uint)
+	return p, NewUintVarP(p, name, shorthand, value, usage)
 }

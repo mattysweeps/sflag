@@ -126,9 +126,21 @@ func StringToStringVar(p *map[string]string, name string, value map[string]strin
 	CommandLine.VarP(newStringToStringValue(value, p), name, "", usage)
 }
 
+// NewStringToStringVar defines a string flag with specified name, default value, and usage string.
+// The argument p points to a map[string]string variable in which to store the value of the flag.
+// The value of each argument will not try to be separated by comma
+func NewStringToStringVar(p *map[string]string, name string, value map[string]string, usage string) *Flag {
+	return NewStringToStringVarP(p, name, "", value, usage)
+}
+
 // StringToStringVarP is like StringToStringVar, but accepts a shorthand letter that can be used after a single dash.
 func StringToStringVarP(p *map[string]string, name, shorthand string, value map[string]string, usage string) {
 	CommandLine.VarP(newStringToStringValue(value, p), name, shorthand, usage)
+}
+
+// NewStringToStringVarP is like StringToStringVar, but accepts a shorthand letter that can be used after a single dash.
+func NewStringToStringVarP(p *map[string]string, name, shorthand string, value map[string]string, usage string) *Flag {
+	return NewVarPF(newStringToStringValue(value, p), name, shorthand, usage)
 }
 
 // StringToString defines a string flag with specified name, default value, and usage string.
@@ -154,7 +166,20 @@ func StringToString(name string, value map[string]string, usage string) *map[str
 	return CommandLine.StringToStringP(name, "", value, usage)
 }
 
+// NewStringToString defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a map[string]string variable that stores the value of the flag.
+// The value of each argument will not try to be separated by comma
+func NewStringToString(name string, value map[string]string, usage string) (*map[string]string, *Flag) {
+	return NewStringToStringP(name, "", value, usage)
+}
+
 // StringToStringP is like StringToString, but accepts a shorthand letter that can be used after a single dash.
 func StringToStringP(name, shorthand string, value map[string]string, usage string) *map[string]string {
 	return CommandLine.StringToStringP(name, shorthand, value, usage)
+}
+
+// NewStringToStringP is like NewStringToString, but accepts a shorthand letter that can be used after a single dash.
+func NewStringToStringP(name, shorthand string, value map[string]string, usage string) (*map[string]string, *Flag) {
+	p := map[string]string{}
+	return &p, NewStringToStringVarP(&p, name, shorthand, value, usage)
 }

@@ -153,9 +153,20 @@ func BoolSliceVar(p *[]bool, name string, value []bool, usage string) {
 	CommandLine.VarP(newBoolSliceValue(value, p), name, "", usage)
 }
 
+// NewBoolSliceVar defines a []bool flag with specified name, default value, and usage string.
+// The argument p points to a []bool variable in which to store the value of the flag.
+func NewBoolSliceVar(p *[]bool, name string, value []bool, usage string) *Flag {
+	return NewVarP(newBoolSliceValue(value, p), name, "", usage)
+}
+
 // BoolSliceVarP is like BoolSliceVar, but accepts a shorthand letter that can be used after a single dash.
 func BoolSliceVarP(p *[]bool, name, shorthand string, value []bool, usage string) {
 	CommandLine.VarP(newBoolSliceValue(value, p), name, shorthand, usage)
+}
+
+// NewBoolSliceVarP is like NewBoolSliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewBoolSliceVarP(p *[]bool, name, shorthand string, value []bool, usage string) *Flag {
+	return NewVarP(newBoolSliceValue(value, p), name, shorthand, usage)
 }
 
 // BoolSlice defines a []bool flag with specified name, default value, and usage string.
@@ -179,7 +190,19 @@ func BoolSlice(name string, value []bool, usage string) *[]bool {
 	return CommandLine.BoolSliceP(name, "", value, usage)
 }
 
+// NewBoolSlice defines a []bool flag with specified name, default value, and usage string.
+// The return value is the address of a []bool variable that stores the value of the flag.
+func NewBoolSlice(name string, value []bool, usage string) (*[]bool, *Flag) {
+	return NewBoolSliceP(name, "", value, usage)
+}
+
 // BoolSliceP is like BoolSlice, but accepts a shorthand letter that can be used after a single dash.
 func BoolSliceP(name, shorthand string, value []bool, usage string) *[]bool {
 	return CommandLine.BoolSliceP(name, shorthand, value, usage)
+}
+
+// NewBoolSliceP is like NewBoolSlice, but accepts a shorthand letter that can be used after a single dash.
+func NewBoolSliceP(name, shorthand string, value []bool, usage string) (*[]bool, *Flag) {
+	p := []bool{}
+	return &p, NewBoolSliceVarP(&p, name, shorthand, value, usage)
 }

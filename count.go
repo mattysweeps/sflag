@@ -62,9 +62,21 @@ func CountVar(p *int, name string, usage string) {
 	CommandLine.CountVar(p, name, usage)
 }
 
+// NewCountVar like NewCountVar only the flag is placed on the CommandLine instead of a given flag set
+func NewCountVar(p *int, name string, usage string) *Flag {
+	return NewCountVarP(p, name, "", usage)
+}
+
 // CountVarP is like CountVar only take a shorthand for the flag name.
 func CountVarP(p *int, name, shorthand string, usage string) {
 	CommandLine.CountVarP(p, name, shorthand, usage)
+}
+
+// NewCountVarP is like NewCountVar only take a shorthand for the flag name.
+func NewCountVarP(p *int, name, shorthand string, usage string) *Flag {
+	flag := NewVarPF(newCountValue(0, p), name, shorthand, usage)
+	flag.NoOptDefVal = "+1"
+	return flag
 }
 
 // Count defines a count flag with specified name, default value, and usage string.
@@ -90,7 +102,20 @@ func Count(name string, usage string) *int {
 	return CommandLine.CountP(name, "", usage)
 }
 
+// NewCount defines a count flag with specified name, default value, and usage string.
+// The return value is the address of an int variable that stores the value of the flag.
+// A count flag will add 1 to its value evey time it is found on the command line
+func NewCount(name string, usage string) (*int, *Flag) {
+	return NewCountP(name, "", usage)
+}
+
 // CountP is like Count only takes a shorthand for the flag name.
 func CountP(name, shorthand string, usage string) *int {
 	return CommandLine.CountP(name, shorthand, usage)
+}
+
+// NewCountP is like NewCount only takes a shorthand for the flag name.
+func NewCountP(name, shorthand string, usage string) (*int, *Flag) {
+	p := new(int)
+	return p, NewCountVarP(p, name, shorthand, usage)
 }

@@ -62,10 +62,23 @@ func BoolVar(p *bool, name string, value bool, usage string) {
 	BoolVarP(p, name, "", value, usage)
 }
 
+// NewBoolVar defines a bool flag with specified name, default value, and usage string.
+// The argument p points to a bool variable in which to store the value of the flag.
+func NewBoolVar(p *bool, name string, value bool, usage string) *Flag {
+	return NewBoolVarP(p, name, "", value, usage)
+}
+
 // BoolVarP is like BoolVar, but accepts a shorthand letter that can be used after a single dash.
 func BoolVarP(p *bool, name, shorthand string, value bool, usage string) {
 	flag := CommandLine.VarPF(newBoolValue(value, p), name, shorthand, usage)
 	flag.NoOptDefVal = "true"
+}
+
+// NewBoolVarP is like NewBoolVar, but accepts a shorthand letter that can be used after a single dash.
+func NewBoolVarP(p *bool, name, shorthand string, value bool, usage string) *Flag {
+	flag := NewVarPF(newBoolValue(value, p), name, shorthand, usage)
+	flag.NoOptDefVal = "true"
+	return flag
 }
 
 // Bool defines a bool flag with specified name, default value, and usage string.
@@ -87,8 +100,21 @@ func Bool(name string, value bool, usage string) *bool {
 	return BoolP(name, "", value, usage)
 }
 
+// NewBool defines a bool flag with specified name, default value, and usage string.
+// The return value is the address of a bool variable that stores the value of the flag.
+func NewBool(name string, value bool, usage string) (*bool, *Flag) {
+	return NewBoolP(name, "", value, usage)
+}
+
 // BoolP is like Bool, but accepts a shorthand letter that can be used after a single dash.
 func BoolP(name, shorthand string, value bool, usage string) *bool {
 	b := CommandLine.BoolP(name, shorthand, value, usage)
 	return b
+}
+
+// NewBoolP is like NewBool, but accepts a shorthand letter that can be used after a single dash.
+func NewBoolP(name, shorthand string, value bool, usage string) (*bool, *Flag) {
+	p := new(bool)
+	flag := NewBoolVarP(p, name, shorthand, value, usage)
+	return p, flag
 }

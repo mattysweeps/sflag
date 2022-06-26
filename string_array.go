@@ -91,9 +91,21 @@ func StringArrayVar(p *[]string, name string, value []string, usage string) {
 	CommandLine.VarP(newStringArrayValue(value, p), name, "", usage)
 }
 
+// NewStringArrayVar defines a string flag with specified name, default value, and usage string.
+// The argument p points to a []string variable in which to store the value of the flag.
+// The value of each argument will not try to be separated by comma. Use a StringSlice for that.
+func NewStringArrayVar(p *[]string, name string, value []string, usage string) *Flag {
+	return NewStringArrayVarP(p, name, "", value, usage)
+}
+
 // StringArrayVarP is like StringArrayVar, but accepts a shorthand letter that can be used after a single dash.
 func StringArrayVarP(p *[]string, name, shorthand string, value []string, usage string) {
 	CommandLine.VarP(newStringArrayValue(value, p), name, shorthand, usage)
+}
+
+// NewStringArrayVarP is like StringArrayVar, but accepts a shorthand letter that can be used after a single dash.
+func NewStringArrayVarP(p *[]string, name, shorthand string, value []string, usage string) *Flag {
+	return NewVarPF(newStringArrayValue(value, p), name, shorthand, usage)
 }
 
 // StringArray defines a string flag with specified name, default value, and usage string.
@@ -119,7 +131,20 @@ func StringArray(name string, value []string, usage string) *[]string {
 	return CommandLine.StringArrayP(name, "", value, usage)
 }
 
+// NewStringArray defines a string flag with specified name, default value, and usage string.
+// The return value is the address of a []string variable that stores the value of the flag.
+// The value of each argument will not try to be separated by comma. Use a StringSlice for that.
+func NewStringArray(name string, value []string, usage string) (*[]string, *Flag) {
+	return NewStringArrayP(name, "", value, usage)
+}
+
 // StringArrayP is like StringArray, but accepts a shorthand letter that can be used after a single dash.
 func StringArrayP(name, shorthand string, value []string, usage string) *[]string {
 	return CommandLine.StringArrayP(name, shorthand, value, usage)
+}
+
+// NewStringArrayP is like StringArray, but accepts a shorthand letter that can be used after a single dash.
+func NewStringArrayP(name, shorthand string, value []string, usage string) (*[]string, *Flag) {
+	p := []string{}
+	return &p, NewStringArrayVarP(&p, name, shorthand, value, usage)
 }

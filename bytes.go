@@ -177,9 +177,20 @@ func BytesBase64Var(p *[]byte, name string, value []byte, usage string) {
 	CommandLine.VarP(newBytesBase64Value(value, p), name, "", usage)
 }
 
+// NewBytesBase64Var defines an []byte flag with specified name, default value, and usage string.
+// The argument p points to an []byte variable in which to store the value of the flag.
+func NewBytesBase64Var(p *[]byte, name string, value []byte, usage string) *Flag {
+	return NewBytesBase64VarP(p, name, "", value, usage)
+}
+
 // BytesBase64VarP is like BytesBase64Var, but accepts a shorthand letter that can be used after a single dash.
 func BytesBase64VarP(p *[]byte, name, shorthand string, value []byte, usage string) {
 	CommandLine.VarP(newBytesBase64Value(value, p), name, shorthand, usage)
+}
+
+// NewBytesBase64VarP is like NewBytesBase64Var, but accepts a shorthand letter that can be used after a single dash.
+func NewBytesBase64VarP(p *[]byte, name, shorthand string, value []byte, usage string) *Flag {
+	return NewVarPF(newBytesBase64Value(value, p), name, shorthand, usage)
 }
 
 // BytesBase64 defines an []byte flag with specified name, default value, and usage string.
@@ -203,7 +214,19 @@ func BytesBase64(name string, value []byte, usage string) *[]byte {
 	return CommandLine.BytesBase64P(name, "", value, usage)
 }
 
+// NewBytesBase64 defines an []byte flag with specified name, default value, and usage string.
+// The return value is the address of an []byte variable that stores the value of the flag.
+func NewBytesBase64(name string, value []byte, usage string) (*[]byte, *Flag) {
+	return NewBytesBase64P(name, "", value, usage)
+}
+
 // BytesBase64P is like BytesBase64, but accepts a shorthand letter that can be used after a single dash.
 func BytesBase64P(name, shorthand string, value []byte, usage string) *[]byte {
 	return CommandLine.BytesBase64P(name, shorthand, value, usage)
+}
+
+// NewBytesBase64P is like NewBytesBase64, but accepts a shorthand letter that can be used after a single dash.
+func NewBytesBase64P(name, shorthand string, value []byte, usage string) (*[]byte, *Flag) {
+	p := new([]byte)
+	return p, NewBytesBase64VarP(p, name, shorthand, value, usage)
 }

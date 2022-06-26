@@ -136,9 +136,20 @@ func UintSliceVar(p *[]uint, name string, value []uint, usage string) {
 	CommandLine.VarP(newUintSliceValue(value, p), name, "", usage)
 }
 
+// NewUintSliceVar defines a uint[] flag with specified name, default value, and usage string.
+// The argument p points to a uint[] variable in which to store the value of the flag.
+func NewUintSliceVar(p *[]uint, name string, value []uint, usage string) *Flag {
+	return NewUintSliceVarP(p, name, "", value, usage)
+}
+
 // UintSliceVarP is like the UintSliceVar, but accepts a shorthand letter that can be used after a single dash.
 func UintSliceVarP(p *[]uint, name, shorthand string, value []uint, usage string) {
 	CommandLine.VarP(newUintSliceValue(value, p), name, shorthand, usage)
+}
+
+// NewUintSliceVarP is like the NewUintSliceVar, but accepts a shorthand letter that can be used after a single dash.
+func NewUintSliceVarP(p *[]uint, name, shorthand string, value []uint, usage string) *Flag {
+	return NewVarPF(newUintSliceValue(value, p), name, shorthand, usage)
 }
 
 // UintSlice defines a []uint flag with specified name, default value, and usage string.
@@ -162,7 +173,19 @@ func UintSlice(name string, value []uint, usage string) *[]uint {
 	return CommandLine.UintSliceP(name, "", value, usage)
 }
 
+// NewUintSlice defines a []uint flag with specified name, default value, and usage string.
+// The return value is the address of a []uint variable that stores the value of the flag.
+func NewUintSlice(name string, value []uint, usage string) (*[]uint, *Flag) {
+	return NewUintSliceP(name, "", value, usage)
+}
+
 // UintSliceP is like UintSlice, but accepts a shorthand letter that can be used after a single dash.
 func UintSliceP(name, shorthand string, value []uint, usage string) *[]uint {
 	return CommandLine.UintSliceP(name, shorthand, value, usage)
+}
+
+// NewUintSliceP is like UintSlice, but accepts a shorthand letter that can be used after a single dash.
+func NewUintSliceP(name, shorthand string, value []uint, usage string) (*[]uint, *Flag) {
+	p := []uint{}
+	return &p, NewUintSliceVarP(&p, name, shorthand, value, usage)
 }

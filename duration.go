@@ -54,9 +54,20 @@ func DurationVar(p *time.Duration, name string, value time.Duration, usage strin
 	CommandLine.VarP(newDurationValue(value, p), name, "", usage)
 }
 
+// NewDurationVar defines a time.Duration flag with specified name, default value, and usage string.
+// The argument p points to a time.Duration variable in which to store the value of the flag.
+func NewDurationVar(p *time.Duration, name string, value time.Duration, usage string) *Flag {
+	return NewDurationVarP(p, name, "", value, usage)
+}
+
 // DurationVarP is like DurationVar, but accepts a shorthand letter that can be used after a single dash.
 func DurationVarP(p *time.Duration, name, shorthand string, value time.Duration, usage string) {
 	CommandLine.VarP(newDurationValue(value, p), name, shorthand, usage)
+}
+
+// NewDurationVarP is like NewDurationVar, but accepts a shorthand letter that can be used after a single dash.
+func NewDurationVarP(p *time.Duration, name, shorthand string, value time.Duration, usage string) *Flag {
+	return NewVarPF(newDurationValue(value, p), name, shorthand, usage)
 }
 
 // Duration defines a time.Duration flag with specified name, default value, and usage string.
@@ -80,7 +91,19 @@ func Duration(name string, value time.Duration, usage string) *time.Duration {
 	return CommandLine.DurationP(name, "", value, usage)
 }
 
+// NewDuration defines a time.Duration flag with specified name, default value, and usage string.
+// The return value is the address of a time.Duration variable that stores the value of the flag.
+func NewDuration(name string, value time.Duration, usage string) (*time.Duration, *Flag) {
+	return NewDurationP(name, "", value, usage)
+}
+
 // DurationP is like Duration, but accepts a shorthand letter that can be used after a single dash.
 func DurationP(name, shorthand string, value time.Duration, usage string) *time.Duration {
 	return CommandLine.DurationP(name, shorthand, value, usage)
+}
+
+// NewDurationP is like NewDuration, but accepts a shorthand letter that can be used after a single dash.
+func NewDurationP(name, shorthand string, value time.Duration, usage string) (*time.Duration, *Flag) {
+	p := new(time.Duration)
+	return p, NewDurationVarP(p, name, shorthand, value, usage)
 }
