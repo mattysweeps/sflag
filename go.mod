@@ -1,3 +1,3 @@
-module github.com/spf13/pflag
+module github.com/mattysweeps/sflag
 
 go 1.18
